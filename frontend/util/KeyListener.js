@@ -1,14 +1,24 @@
-var KeyStore = require('../stores/KeyStore.js');
+var KeyStore = require('../stores/KeyStore.js'),
+    TONES = require('../constants/Tones.js');
 
 var Mapping = {
-
+  //map TONES to keycode
 };
 
 var KeyListener = {
-  handlekd: function(){
+  handleKeyup: function(){
+    $(document).on('keyup', function(e){
+      KeyActions.keyPressed(e.target.noteName);
+      console.log(e); //find keycode in event
+    });
+  },
+  handleKeydown: function(){
     $(document).on('keydown', function(e){
-      console.log(e) ==> keycode
-      
-    })
+      KeyActions.keyReleased(e.target.noteName);
+      console.log(e); //find keycode in event
+    });
   }
 };
+
+
+module.exports = KeyListener;
