@@ -13,35 +13,27 @@ KeyStore.all = function(){
 //catches event from AppDispatcher
 KeyStore.__onDispatch = function(payload){
   switch(payload.actionType) {
-    case "KEY_UP":
-      addKey(payload.noteName);
-      KeyStore.__emitChange();
-      break;
     case "KEY_DOWN":
+      addKey(payload.noteName);
+      break;
+    case "KEY_UP":
       resetKeys(payload.noteName);
-      KeyStore.__emitChange();
       break;
   }
 };
 
 // KeyStore.__emitChange = function(){
-//   resetKeys(payload.keys);
+//   // triggers all callbacks from addListener()
 // }
-var addKeyListener = function(key){
-
-};
-
-var removeKeyListener = function(key){
-
-};
 
 var resetKeys = function(keys){
   _keys = keys;
+  KeyStore.__emitChange();
 };
 
 var addKey = function(key){
   _keys.push(key);
+  KeyStore.__emitChange();
 };
 
-// create(tone[key]), destroy(tone[key])
 module.exports = KeyStore;

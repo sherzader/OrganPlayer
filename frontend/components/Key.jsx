@@ -1,27 +1,30 @@
 var React = require('react'),
     Note = require('../util/Note.js'),
-    TONES = require('../constants/Tones.js'),
-    KeyStore = require('../store/KeyStore.js');
+    KeyStore = require('../stores/KeyStore.js'),
+    TONES = require('../constants/Tones.js');
 
 var Key = React.createClass({
   getInitialState: function(){
-    return { this.prop.noteName }
+    return ({ active: false });
+  },
+  _notesChanged: function(){
+    if (KeyStore.all().indexOf(this.props.noteName) !== -1 ){
+      this.setState( { active: true });
+    }
   },
   componentDidMount: function(){
-    this.note = new Note(TONES[this.prop.noteName]);
-    addKeyListener(this.note);
+    this.note = new Note(TONES[this.props.noteName]);
+    this.token = KeyStore.addListener(this._notesChanged);
   },
   componentWillUnmount: function(){
-    removeKeyListener(this.note);
-  },
-  addKeyListener: function(note){
-  },
-  removeKeyListener: function(note){
-
+    KeyStore.remove(this.token);
   },
   render: function(){
     return(
-      <div>{this.prop.noteName}</div>
+      <div>{KeyStore.all().map(function(key){
+          <li key={key.id}>{key.noteName}</li>
+        })};
+      </div>
     );
   }
 });

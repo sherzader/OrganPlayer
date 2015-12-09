@@ -13,4 +13,4 @@ var TONES = {
   "B4" : 493.88
 }
 
-module.exports = Tone;
+module.exports = TONES;
