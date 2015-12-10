@@ -23,14 +23,12 @@ var KeyListener = {
     $(document).on('keyup', function(e){
       var note = Mapping[e.keyCode];
       KeyActions.keyReleased(note);
-      console.log(e);
     });
   },
   handleKeydown: function(){
     $(document).on('keydown', function(e){
       var note = Mapping[e.keyCode];
       KeyActions.keyPressed(note);
-      console.log(e);
     });
   }
 };

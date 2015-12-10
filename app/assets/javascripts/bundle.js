@@ -48,16 +48,14 @@
 	var React = __webpack_require__(147);
 	var Key = __webpack_require__(159);
 	var KeyListener = __webpack_require__(183);
-	var TONES = __webpack_require__(182);
+	var Organ = __webpack_require__(186);
 	
 	KeyListener.handleKeyup();
 	KeyListener.handleKeydown();
 	
 	document.addEventListener("DOMContentLoaded", function () {
 	  var root = document.getElementById('content');
-	  TONES.forEach(function (note) {
-	    ReactDOM.render(React.createElement(Key, { noteName: note }), root);
-	  });
+	  ReactDOM.render(React.createElement(Organ, null), root);
 	});
 
 /***/ },
@@ -19666,36 +19664,26 @@
 	    if (KeyStore.all().indexOf(this.props.noteName) !== -1) {
 	      this.setState({ active: true });
 	      // this.note.start();
+	      this.note.start();
+	    } else {
+	      this.note.stop();
 	    }
-	    this.note.start();
-	    this.note.stop();
 	  },
 	  componentDidMount: function () {
 	
 	    //pass frequency to Note()
 	    this.note = new Note(TONES[this.props.noteName]);
-	    var currentNote = this._notesChanged();
-	    this.token = KeyStore.addListener(currentNote);
-	    KeyStore.__onDispatch({
-	      actionType: "KEYDOWN",
-	      noteName: this.props.noteName
-	    });
+	    var currentNote = this._notesChanged;
+	    KeyStore.addListener(currentNote);
 	  },
 	  componentWillUnmount: function () {
-	    KeyStore.remove(this.token);
+	    KeyStore.remove(this._notesChanged);
 	  },
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      null,
-	      KeyStore.all().map(function (key) {
-	        React.createElement(
-	          'li',
-	          { key: key.id },
-	          key.noteName
-	        );
-	      }),
-	      ';'
+	      { className: 'keyNote', name: this.props.noteName },
+	      this.props.noteName
 	    );
 	  }
 	});
@@ -19748,7 +19736,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(162).Store,
-	    AppDispatcher = __webpack_require__(179),
+	    AppDispatcher = __webpack_require__(187),
 	    TONES = __webpack_require__(182);
 	
 	var _keys = [];
@@ -19771,8 +19759,9 @@
 	  }
 	};
 	
-	var resetKeys = function (keys) {
-	  _keys = keys;
+	var resetKeys = function (key) {
+	  var idx = _keys.indexOf(key);
+	  _keys.splice(idx, 1);
 	  KeyStore.__emitChange();
 	};
 	
@@ -26206,14 +26195,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 179 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Dispatcher = __webpack_require__(180).Dispatcher;
-	
-	module.exports = new Dispatcher();
-
-/***/ },
+/* 179 */,
 /* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -26516,14 +26498,12 @@
 	    $(document).on('keyup', function (e) {
 	      var note = Mapping[e.keyCode];
 	      KeyActions.keyReleased(note);
-	      console.log(e);
 	    });
 	  },
 	  handleKeydown: function () {
 	    $(document).on('keydown', function (e) {
 	      var note = Mapping[e.keyCode];
 	      KeyActions.keyPressed(note);
-	      console.log(e);
 	    });
 	  }
 	};
@@ -26536,7 +26516,7 @@
 
 	var KeyStore = __webpack_require__(161),
 	    TONES = __webpack_require__(182),
-	    AppDispatcher = __webpack_require__(185);
+	    AppDispatcher = __webpack_require__(187);
 	
 	var KeyActions = {
 	
@@ -26558,12 +26538,38 @@
 	module.exports = KeyActions;
 
 /***/ },
-/* 185 */
+/* 185 */,
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Dispatcher = __webpack_require__(180).Dispatcher;
+	var React = __webpack_require__(147),
+	    Key = __webpack_require__(159),
+	    TONES = __webpack_require__(182);
 	
-	module.exports = new Dispatcher();
+	var Organ = React.createClass({
+	  displayName: 'Organ',
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      null,
+	      Object.keys(TONES).map(function (key) {
+	        return React.createElement(Key, { key: key, noteName: key });
+	      }),
+	      ';'
+	    );
+	  }
+	});
+	
+	module.exports = Organ;
+
+/***/ },
+/* 187 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(180).Dispatcher;
+	
+	module.exports = new AppDispatcher();
 
 /***/ }
 /******/ ]);

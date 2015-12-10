@@ -1,5 +1,5 @@
 var Store = require('flux/utils').Store,
-    AppDispatcher = require('../dispatcher/dispatcher.js'),
+    AppDispatcher = require('../dispatcher/appDispatcher.js'),
     TONES = require('../constants/Tones.js');
 
 var _keys = [];
@@ -22,8 +22,9 @@ KeyStore.__onDispatch = function(payload){
   }
 };
 
-var resetKeys = function(keys){
-  _keys = keys;
+var resetKeys = function(key){
+  var idx = _keys.indexOf(key);
+  _keys.splice(idx, 1);
   KeyStore.__emitChange();
 };
 

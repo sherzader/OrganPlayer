@@ -11,29 +11,25 @@ var Key = React.createClass({
     if (KeyStore.all().indexOf(this.props.noteName) !== -1 ){
       this.setState( { active: true });
       // this.note.start();
+      this.note.start();
+    } else {
+      this.note.stop();
     }
-    this.note.start();
-    this.note.stop();
   },
   componentDidMount: function(){
 
     //pass frequency to Note()
     this.note = new Note(TONES[this.props.noteName]);
-    var currentNote = this._notesChanged();
-    this.token = KeyStore.addListener(currentNote);
-    KeyStore.__onDispatch({
-      actionType: "KEYDOWN",
-      noteName: this.props.noteName
-    });
+    var currentNote = this._notesChanged;
+    KeyStore.addListener(currentNote);
   },
   componentWillUnmount: function(){
-    KeyStore.remove(this.token);
+    KeyStore.remove(this._notesChanged);
   },
   render: function(){
     return(
-      <div>{KeyStore.all().map(function(key){
-          <li key={key.id}>{key.noteName}</li>
-        })};
+      <div className="keyNote" name={this.props.noteName}>
+        {this.props.noteName}
       </div>
     );
   }

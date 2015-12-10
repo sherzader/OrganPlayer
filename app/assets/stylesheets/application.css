@@ -13,3 +13,13 @@
  *= require_tree .
  *= require_self
  */
+
+div #content {
+  border-width: medium;
+  border-color: red;
+}
+
+.keyNote {
+  border-color: black;
+  border-width: medium;
+}

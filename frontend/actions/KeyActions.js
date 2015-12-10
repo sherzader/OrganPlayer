@@ -1,6 +1,6 @@
 var KeyStore = require('../stores/KeyStore.js'),
     TONES = require('../constants/Tones.js'),
-    AppDispatcher = require('../dispatcher/Dispatcher.js');
+    AppDispatcher = require('../dispatcher/appDispatcher');
 
 
 var KeyActions = {
