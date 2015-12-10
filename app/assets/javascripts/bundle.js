@@ -48,13 +48,16 @@
 	var React = __webpack_require__(147);
 	var Key = __webpack_require__(159);
 	var KeyListener = __webpack_require__(183);
+	var TONES = __webpack_require__(182);
 	
 	KeyListener.handleKeyup();
 	KeyListener.handleKeydown();
 	
 	document.addEventListener("DOMContentLoaded", function () {
 	  var root = document.getElementById('content');
-	  ReactDOM.render(React.createElement(Key, { noteName: "C4" }), root);
+	  TONES.forEach(function (note) {
+	    ReactDOM.render(React.createElement(Key, { noteName: note }), root);
+	  });
 	});
 
 /***/ },
@@ -19662,11 +19665,21 @@
 	  _notesChanged: function () {
 	    if (KeyStore.all().indexOf(this.props.noteName) !== -1) {
 	      this.setState({ active: true });
+	      // this.note.start();
 	    }
+	    this.note.start();
+	    this.note.stop();
 	  },
 	  componentDidMount: function () {
+	
+	    //pass frequency to Note()
 	    this.note = new Note(TONES[this.props.noteName]);
-	    this.token = KeyStore.addListener(this._notesChanged);
+	    var currentNote = this._notesChanged();
+	    this.token = KeyStore.addListener(currentNote);
+	    KeyStore.__onDispatch({
+	      actionType: "KEYDOWN",
+	      noteName: this.props.noteName
+	    });
 	  },
 	  componentWillUnmount: function () {
 	    KeyStore.remove(this.token);
@@ -19757,10 +19770,6 @@
 	      break;
 	  }
 	};
-	
-	// KeyStore.__emitChange = function(){
-	//   // triggers all callbacks from addListener()
-	// }
 	
 	var resetKeys = function (keys) {
 	  _keys = keys;
@@ -26200,7 +26209,7 @@
 /* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
-	varDispatcher = __webpack_require__(180).Dispatcher;
+	var Dispatcher = __webpack_require__(180).Dispatcher;
 	
 	module.exports = new Dispatcher();
 
@@ -26487,7 +26496,7 @@
 	    KeyActions = __webpack_require__(184);
 	
 	var Mapping = {
-	  //map TONES to keycode
+	  //map keyCode to noteName
 	  65: "C4",
 	  87: "C4/D4",
 	  83: "D4",
@@ -26505,14 +26514,16 @@
 	var KeyListener = {
 	  handleKeyup: function () {
 	    $(document).on('keyup', function (e) {
-	      KeyActions.keyReleased(e.keyCode);
-	      console.log(e); //find keycode in event
+	      var note = Mapping[e.keyCode];
+	      KeyActions.keyReleased(note);
+	      console.log(e);
 	    });
 	  },
 	  handleKeydown: function () {
 	    $(document).on('keydown', function (e) {
-	      KeyActions.keyPressed(e.keyCode);
-	      console.log(e); //find keycode in event
+	      var note = Mapping[e.keyCode];
+	      KeyActions.keyPressed(note);
+	      console.log(e);
 	    });
 	  }
 	};

@@ -22,10 +22,6 @@ KeyStore.__onDispatch = function(payload){
   }
 };
 
-// KeyStore.__emitChange = function(){
-//   // triggers all callbacks from addListener()
-// }
-
 var resetKeys = function(keys){
   _keys = keys;
   KeyStore.__emitChange();

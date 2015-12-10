@@ -3,7 +3,7 @@ var KeyStore = require('../stores/KeyStore.js'),
     KeyActions = require('../actions/KeyActions');
 
 var Mapping = {
-  //map TONES to keycode
+  //map keyCode to noteName
   65: "C4",
   87: "C4/D4",
   83: "D4",
@@ -21,14 +21,16 @@ var Mapping = {
 var KeyListener = {
   handleKeyup: function(){
     $(document).on('keyup', function(e){
-      KeyActions.keyReleased(e.keyCode);
-      console.log(e); //find keycode in event
+      var note = Mapping[e.keyCode];
+      KeyActions.keyReleased(note);
+      console.log(e);
     });
   },
   handleKeydown: function(){
     $(document).on('keydown', function(e){
-      KeyActions.keyPressed(e.keyCode);
-      console.log(e); //find keycode in event
+      var note = Mapping[e.keyCode];
+      KeyActions.keyPressed(note);
+      console.log(e);
     });
   }
 };
