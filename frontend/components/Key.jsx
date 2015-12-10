@@ -31,7 +31,7 @@ var Key = React.createClass({
       <div className="keyNote" name={this.props.noteName}>
         {this.props.noteName}
       </div>
-    );
+    )
   }
 });
 

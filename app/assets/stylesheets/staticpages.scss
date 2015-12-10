@@ -1,13 +1,28 @@
 // Place all the styles related to the staticpages controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-div #content {
+.Organ {
+  margin-left: auto;
+  margin-right: auto;
+  width: 960px;
+  height: 200px;
   border-width: medium;
-  border-color: red;
+  border-color: black;
+  border-style: solid;
+  display: flex;
 }
 
 .keyNote {
-  background-color: red;
-  border-color: black;
-  border-width: medium;
+  text-align: center;
+  width: 80px;
+  height: 200px;
+  outline-width: thin;
+  outline-style: solid;
+  outline-color: black;
+  float: left;
+}
+
+.keyNote:nth-child(even) {
+  background-color: black;
+  height: 100px;
 }

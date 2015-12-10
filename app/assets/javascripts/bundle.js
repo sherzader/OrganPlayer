@@ -26552,11 +26552,10 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      null,
+	      { className: 'Organ' },
 	      Object.keys(TONES).map(function (key) {
 	        return React.createElement(Key, { key: key, noteName: key });
-	      }),
-	      ';'
+	      })
 	    );
 	  }
 	});
